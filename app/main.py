@@ -1,5 +1,6 @@
 from flet import *
 from client_backend import SmallPost
+import info_box_file
 # import logging
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -24,6 +25,8 @@ def main(page: Page):
         )
     )
 
+    info_box = info_box_file.info_box
+
     post_list = Container(
         image_src="assets/BG_empty.png",
         image_fit=ImageFit.COVER,
@@ -37,17 +40,6 @@ def main(page: Page):
         )
     )
 
-    info_box = Container(
-        image_src="boxes/empty.png",
-        margin=margin.only(
-            top=0,
-            bottom=0,
-            left=0,
-            right=0,
-        ),
-        visible=False,
-    )
-
     pages = {
         '/': View(
             "/",
@@ -56,8 +48,6 @@ def main(page: Page):
             ],
         )
     }
-
-    
 
     def route_change(route):
         page.views.clear()
@@ -69,14 +59,8 @@ def main(page: Page):
                 post_list.content.controls.append(SmallPost(i).post)
             background.content.controls.append(post_list)
             background.content.controls.append(info_box)
-        
-        # page.add(reload_btn)
-        
-    # page.add(background)
 
     page.on_route_change = route_change
     page.go(page.route)
-
-    # page.add(reload_btn)
 
 app(target=main, assets_dir="assets", view=WEB_BROWSER)

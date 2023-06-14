@@ -1,6 +1,7 @@
 from flet import *
 import db_config
 import psycopg2
+import info_box_file
 
 class Author:
     def __init__(self, id: int) -> None:
@@ -179,12 +180,17 @@ class Post():
                                                 )
                                             ]
                                         ),
-                                        Container(
-                                            width=48,
-                                            height=48,
-                                            bgcolor="white",
-                                            opacity=0,
-                                            on_hover=self.category_button_hover,
+                                        GestureDetector(
+                                            mouse_cursor=MouseCursor.CLICK,
+                                            hover_interval=5,
+                                            content=Container(
+                                                height=48,
+                                                width=48,
+                                                bgcolor="white",
+                                                opacity=0,
+                                            ),
+                                            on_hover=self.category_button_hover_enter,
+                                            on_exit=self.category_button_hover_exit
                                         )
                                     ]
                                 ),
@@ -220,13 +226,18 @@ class Post():
                                             Image(
                                                 src=self.author.icon
                                             ),
-                                            Container(
-                                                width=48,
-                                                height=51,
-                                                bgcolor="white",
-                                                opacity=0,
-                                                on_hover=self.author_button_hover
-                                            )
+                                            GestureDetector(
+                                                mouse_cursor=MouseCursor.CLICK,
+                                                hover_interval=5,
+                                                content=Container(
+                                                    width=48,
+                                                    height=51,
+                                                    bgcolor="white",
+                                                    opacity=0,
+                                                ),
+                                                on_hover=self.author_button_hover_enter,
+                                                on_exit=self.author_button_hover_exit
+                                            ),
                                         ]
                                     ),
                                 )
@@ -280,22 +291,50 @@ class Post():
             )
         )
 
-    def category_button_hover(self, e: HoverEvent):
-        if e.data == "true":
-            e.control.opacity = 0.1
-            e.control.bgcolor = "white"
-            e.control.update()
-        else:
-            e.control.opacity = 1
-            e.control.bgcolor = None
-            e.control.update()
+    def category_button_hover_enter(self, e: HoverEvent):
+        info_box = info_box_file.info_box
+        e.control.content.opacity = 0.1
+        e.control.content.bgcolor = "white"
+        e.control.update()
+        info_box.disabled = False
+        info_box.visible = True
+        info_box.top = max(0, e.global_y + 20)
+        info_box.left = max(0, e.global_x + 10)
+        info_box.content.src = f"http://127.0.0.1:8000/generate_tab/category/{self.category_id}"
+        info_box.update()
 
-    def author_button_hover(self, e: HoverEvent):
-        if e.data == "true":
-            e.control.opacity = 0.1
-            e.control.bgcolor = "white"
-            e.control.update()
-        else:
-            e.control.opacity = 1
-            e.control.bgcolor = None
-            e.control.update()
+    def category_button_hover_exit(self, e: HoverEvent):
+        info_box = info_box_file.info_box
+        e.control.content.opacity = 1
+        e.control.content.bgcolor = None
+        e.control.update()
+        info_box.disabled = True
+        info_box.visible = False
+        info_box.top = 0
+        info_box.left = 0
+        info_box.update()
+
+    def author_button_hover_enter(self, e: HoverEvent):
+        info_box = info_box_file.info_box
+        e.control.content.opacity = 0.1
+        e.control.content.bgcolor = "white"
+        e.control.update()
+        info_box.disabled = False
+        info_box.visible = True
+        info_box.top = max(0, e.global_y + 20)
+        info_box.left = None
+        info_box.right = min(0, e.page.window_width - e.global_x + 10)
+        info_box.content.src = f"http://127.0.0.1:8000/generate_tab/author/{self.author_id}"
+        info_box.update()
+
+    def author_button_hover_exit(self, e: HoverEvent):
+        info_box = info_box_file.info_box
+        e.control.content.opacity = 1
+        e.control.content.bgcolor = None
+        e.control.update()
+        info_box.disabled = True
+        info_box.visible = False
+        info_box.top = 0
+        info_box.left = 0
+        info_box.right = None
+        info_box.update()
