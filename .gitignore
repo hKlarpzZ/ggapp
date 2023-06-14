@@ -1,8 +1,6 @@
 /__pycache__/
 /venv/
-*.ini
-custom_checkbox.py
-*.zip
-main_kivy.py
-simple_tasker.py
-.gitignore
+/app/__pycache__/
+/server/__pycache__/
+/server/test.json
+desktop.ini
