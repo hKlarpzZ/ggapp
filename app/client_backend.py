@@ -84,37 +84,72 @@ class SmallPost():
             print(f"[-] Closed small post database client connection from object with id = {self.id}")
 
         self.post = Container(
-            width=900,
+            width=600,
             height=120,
-            image_src="assets/title_small.png",
+            image_src=f"assets/mini/mini_post_bg_{self.category_id}.png",
             on_click=self.show_post,
             on_hover=self.show_category,
             content=Column(
                 controls=[
-                    Text(
-                        value=self.title,
-                        text_align="center",
-                        font_family="main",
-                        size=20,
+                    Container(
+                        margin=margin.only(
+                            top=0,
+                        ),
+                        content=Text(
+                            value=self.title,
+                            text_align="center",
+                            font_family="main",
+                            color="#373737",
+                            size=20,
+                        )
                     )
                 ],
-                alignment=MainAxisAlignment.CENTER,
+                alignment=MainAxisAlignment.START,
                 horizontal_alignment=CrossAxisAlignment.CENTER,
             )
         )
 
+        if self.category_id == "4":
+            self.post.height = 260
+            
+        if self.category_id == "1":
+            self.post.content.controls[0].margin = margin.only(
+                top=20,
+                left=120,
+            )
+        elif self.category_id == "2":
+            self.post.content.controls[0].margin = margin.only(
+                top=24,
+                right=168,
+            )
+        elif self.category_id == "3":
+            self.post.content.controls[0].margin = margin.only(
+                top=16,
+            )
+        elif self.category_id == "4":
+            self.post.content.controls[0].margin = margin.only(
+                top=212,
+                left=100,
+            )
+
     def show_post(self, e: TapEvent):
         e.control.width = 900
         e.control.height = 600
-        e.control.image_src = "assets/post_bg.png"
         e.control.content = Post(self.id).post.content
+        e.control.on_click = None
+        e.control.on_hover = None
+        e.control.image_src = "assets/post_bg.png"
         e.control.update()
 
     def show_category(self, e: HoverEvent):
         if e.data == "true":
-            pass
+            e.control.image_src = f"assets/mini/mini_post_bg_{self.category_id}_hover.png"
+            e.control.content.controls[0].content.color = "white"
+            e.control.update()
         else:
-            pass
+            e.control.image_src = f"assets/mini/mini_post_bg_{self.category_id}.png"
+            e.control.content.controls[0].content.color = "#373737"
+            e.control.update()
 
 class Post():
     def __init__(self, id: int) -> None:

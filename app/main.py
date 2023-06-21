@@ -15,7 +15,7 @@ def main(page: Page):
     page.window_min_width = 1280
 
     background = Container(
-        image_src="assets/BG.png",
+        image_src="assets/NEW_BG.png",
         image_fit=ImageFit.COVER,
         width=2000*page.width,
         expand=True,
@@ -36,7 +36,7 @@ def main(page: Page):
             controls=[],
             horizontal_alignment=CrossAxisAlignment.CENTER,
             scroll='auto',
-            spacing=40,
+            spacing=12,
         )
     )
 
