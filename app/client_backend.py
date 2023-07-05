@@ -86,7 +86,7 @@ class SmallPost():
         self.post = Container(
             width=600,
             height=120,
-            image_src=f"assets/mini/mini_post_bg_{self.category_id}.png",
+            image_src=f"assets/mini_post_bg_{self.category_id}.png",
             on_click=self.show_post,
             on_hover=self.show_category,
             content=Column(
@@ -143,11 +143,11 @@ class SmallPost():
 
     def show_category(self, e: HoverEvent):
         if e.data == "true":
-            e.control.image_src = f"assets/mini/mini_post_bg_{self.category_id}_hover.png"
+            e.control.image_src = f"assets/mini_post_bg_{self.category_id}_hover.png"
             e.control.content.controls[0].content.color = "white"
             e.control.update()
         else:
-            e.control.image_src = f"assets/mini/mini_post_bg_{self.category_id}.png"
+            e.control.image_src = f"assets/mini_post_bg_{self.category_id}.png"
             e.control.content.controls[0].content.color = "#373737"
             e.control.update()
 
